@@ -34,6 +34,7 @@
             android:name="com.example.woong.Dialog2"
             android:label="@string/title_activity_dialog2" >
         </activity>
+        <receiver android:name=".RepeatingAlarm" android:process=":remote" />
     </application>
 
 </manifest>

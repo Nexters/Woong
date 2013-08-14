@@ -3,12 +3,14 @@ package com.example.woong;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,48 +19,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 private static final int Alarm = 0;
-	
-	/*
-	 * 알람관련 맴버 변수
-	 */
-	 // 알람 메니저
-	 private AlarmManager mManager;
-	 // 설정 일시
-	 private GregorianCalendar mCalendar;
-	 //일자 설정 클래스
-	// private DatePicker mDate;
+Toast mToast;
+
+
 	 //시작 설정 클래스
 	 public TimePicker mTime;
-	 
-	 
-	/*
-	 * 통지 관련 맴버 변수
-	 */
-	 private NotificationManager mNotification;
+
+	 private int mHour;
+	 private int mMinute;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 //통지 매니저를 취득
-		  mNotification = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		 
-		  //알람 매니저를 취득
-		  mManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		  //현재 시각을 취득
-		  mCalendar = new GregorianCalendar();
-		  Log.i("HelloAlarmActivity",mCalendar.getTime().toString());
+		
 		  
 		  setContentView(R.layout.activity_main);
-		
-		  mTime = (TimePicker)findViewById(R.id.time_picker);
-		  //mTime.setCurrentHour(mCalendar.get(Calendar.HOUR_OF_DAY));
-		  //mTime.setCurrentMinute(mCalendar.get(Calendar.MINUTE));
-		  //mTime.setOnTimeChangedListener(this);
 		
 	}
 	 
@@ -111,72 +94,58 @@ private static final int Alarm = 0;
     	return false;
     }
 	
+	//TimePicker 리스너
+	 private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
+	    new TimePickerDialog.OnTimeSetListener(){
+	     @Override
+	     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+	      mHour = hourOfDay;
+	      mMinute = minute;
+	     
+	     }  
+	 };
+	 
+
 	protected Dialog onCreateDialog(int id) {
 		AlertDialog alert;
 		
 		switch(id) {
 		case Alarm:
-			final LinearLayout linear = (LinearLayout)View.inflate(this, R.layout.custom_dialog, null);
-		
-			alert = new AlertDialog.Builder(this)
-			.setTitle("Set time")
-			.setView(linear)
-			.setCancelable(false)
-			.setPositiveButton("Set", 
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					setAlarm();
-					
-				}})
-				
-			.setNegativeButton("Cancel",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.cancel();
-				
-			}}).create();
-			  
-			
-			break;
-			
-		default:
-			alert = null;
+			setAlarm();
+			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute, false);
 			
 		} 
 		
-		return alert;
+		//return alert;
+		  return null;
 	}
 	
 	
 	//알람의 설정
 	  private void setAlarm() {
-	   mManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent());
-	  Log.i("HelloAlarmActivity", mCalendar.getTime().toString());
-	  }
-	 
-	  //알람의 설정 시각에 발생하는 인텐트 작성 --->여기에 알람설정이나 진동 설정 하면 됨 ㅎㅎㅎ
-	  private PendingIntent pendingIntent() {
-	   Intent i = new Intent(getApplicationContext(), Dialog2.class);   
-	   PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-     
-	   return pi;
-	  }
+       Intent intent = new Intent(MainActivity.this, RepeatingAlarm.class);
+       PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this,
+               0, intent, 0);
+       
+       // We want the alarm to go off 30 seconds from now.
+       long firstTime = SystemClock.elapsedRealtime(); // 0으로 세팅
+       firstTime += (mHour * 1000 * 60 * 60) + (mMinute *1000 * 60); //설정시간
 
-	  //시각 설정 클래스의 상태변화 리스너
-	  public void onTimeChanged (TimePicker view, int hourOfDay, int minute) {
-	  // mCalendar.set (mDate.getYear(), mDate.getMonth(), mDate.getDayOfMonth(), hourOfDay, minute);
-		    int currentYY = mCalendar.get(Calendar.YEAR);
-			int currentMM = mCalendar.get(Calendar.MONTH);
-			int currentDD = mCalendar.get(Calendar.DAY_OF_MONTH);
-			
-			mCalendar.set(currentYY, currentMM, currentDD, mTime.getCurrentHour(), mTime.getCurrentMinute(),00);
+       // Schedule the alarm!
+       AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+       am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                       firstTime, 86400*1000, sender);
 
-			if(mCalendar.getTimeInMillis() < mCalendar.getTimeInMillis()){
-				mCalendar.set(currentYY, currentMM, currentDD+1, mTime.getCurrentHour(), mTime.getCurrentMinute(),00);
-				Log.i("TAG",mCalendar.getTimeInMillis()+":");
-			}
-			
-	   Log.i("HelloAlarmActivity",mCalendar.getTime().toString());
-	  }
+       // Tell the user about what we did.
+       if (mToast != null) {
+           mToast.cancel();
+       }
+       mToast = Toast.makeText(MainActivity.this, R.string.repeating_scheduled,
+               Toast.LENGTH_LONG);
+       mToast.show();
 	
+
+	 //return sender;
+
+	}
 }
