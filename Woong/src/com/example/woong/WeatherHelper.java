@@ -21,7 +21,7 @@ public class WeatherHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		
-		//여기다 테이블 만들어야함
+		//�ш린�����釉�留���댁���	
 	}
 
 	@Override

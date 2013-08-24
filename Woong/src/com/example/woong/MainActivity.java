@@ -26,12 +26,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-private static final int Alarm = 0;
-Toast mToast;
+	private static final int Alarm = 0;
+	Toast mToast;
 
 
-	 //시작 설정 클래스
-	 public TimePicker mTime;
+	 //��� �ㅼ� �대���	 public TimePicker mTime;
 
 	 private int mHour;
 	 private int mMinute;
@@ -91,11 +90,11 @@ Toast mToast;
 			setTitleColor(Color.BLUE);
     		return true;
     	}
+    	
     	return false;
     }
 	
-	//TimePicker 리스너
-	 private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
+	//TimePicker 由ъ���	 private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
 	    new TimePickerDialog.OnTimeSetListener(){
 	     @Override
 	     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -121,15 +120,15 @@ Toast mToast;
 	}
 	
 	
-	//알람의 설정
+	//������ㅼ�
 	  private void setAlarm() {
        Intent intent = new Intent(MainActivity.this, RepeatingAlarm.class);
        PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this,
                0, intent, 0);
        
        // We want the alarm to go off 30 seconds from now.
-       long firstTime = SystemClock.elapsedRealtime(); // 0으로 세팅
-       firstTime += (mHour * 1000 * 60 * 60) + (mMinute *1000 * 60); //설정시간
+       long firstTime = SystemClock.elapsedRealtime(); // 0�쇰� �명�
+       firstTime += (mHour * 1000 * 60 * 60) + (mMinute *1000 * 60); //�ㅼ����
 
        // Schedule the alarm!
        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
