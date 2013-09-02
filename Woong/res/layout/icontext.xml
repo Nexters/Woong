@@ -19,7 +19,6 @@
         android:layout_centerVertical="true"
        	android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
-        android:src="@drawable/cloud"
         android:scaleType="centerInside"        
       	/>
     <TextView

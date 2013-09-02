@@ -59,11 +59,11 @@ public class MainActivity extends Activity {
 		// 
 		arItem = new ArrayList<MyItem>();
 		MyItem mi;
-		mi = new MyItem(R.drawable.cloud, "서울시 마포구", "30");
+		mi = new MyItem(R.drawable.cloud_285x123, "서울시 마포구", "30");
 		arItem.add(mi);
-		mi = new MyItem(R.drawable.rain, "서울시 서대문구", "25");
+		mi = new MyItem(R.drawable.rain_285x197, "서울시 서대문구", "25");
 		arItem.add(mi);
-		mi = new MyItem(R.drawable.snow, "서울시 관악구", "40");
+		mi = new MyItem(R.drawable.snow_93x225, "서울시 관악구", "40");
 		arItem.add(mi);
 		
 		MyListAdapter MyAdapter = new MyListAdapter(this, R.layout.icontext, arItem);
@@ -245,13 +245,13 @@ class MyListAdapter extends BaseAdapter {
 		// 배경바꾸기
 		switch(pos) {
 		case 0:
-			convertView.setBackgroundResource(R.drawable.switch1);
+			convertView.setBackgroundResource(R.drawable.switch1_1);
 			break;
 		case 1:
-			convertView.setBackgroundResource(R.drawable.switch2);
+			convertView.setBackgroundResource(R.drawable.switch1_2);
 			break;
 		case 2:
-			convertView.setBackgroundResource(R.drawable.switch3);
+			convertView.setBackgroundResource(R.drawable.switch1_3);
 			break;
 			
 		}
