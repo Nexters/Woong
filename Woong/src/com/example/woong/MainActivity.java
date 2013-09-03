@@ -17,6 +17,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -41,20 +42,43 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends Activity {
 	private static final int Alarm = 0;
 	Toast mToast;
-
-
+	
+	// pointer variable of MainActivity.  
+	public static Context mContext;
+	
+	public MyListAdapter MyAdapter;
+	public ListView MyList;
+	
 	 //��� �ㅼ� �대���
-	 public TimePicker mTime;
-
-	 private int mHour;
-	 private int mMinute;
+	public TimePicker mTime;
+	private int mHour;
+	private int mMinute;
 	 
-	 ArrayList<MyItem> arItem;
+	ArrayList<MyItem> arItem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		mContext = this;
+		// save address using preference
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		Log.i("MainActivity", "onResume");
+		
+		SharedPreferences pref = getSharedPreferences("PrefTest", 0);
+		SharedPreferences.Editor edit = pref.edit();
+		String myStr = "서울시 강남구";
+		
+		edit.putString("address4", myStr);
+		edit.putInt("count", 0);
+		
+		edit.commit();
 		
 		// 
 		arItem = new ArrayList<MyItem>();
@@ -65,16 +89,20 @@ public class MainActivity extends Activity {
 		arItem.add(mi);
 		mi = new MyItem(R.drawable.snow_93x225, "서울시 관악구", "40");
 		arItem.add(mi);
+		mi = new MyItem(R.drawable.cloud_285x123, 
+				pref.getString("address4", ""), 
+				"25");
+		arItem.add(mi);
 		
-		MyListAdapter MyAdapter = new MyListAdapter(this, R.layout.icontext, arItem);
+		int myColor = pref.getInt("color", 0);
+		// MyListAdapter MyAdapter = new MyListAdapter(this, R.layout.icontext, arItem, myColor);
+		MyAdapter = new MyListAdapter(this, R.layout.icontext, arItem, myColor);
 		
-		ListView MyList;
+		// ListView MyList;
 		MyList = (ListView)findViewById(R.id.list);
 		MyList.setDividerHeight(0);
 		MyList.setAdapter(MyAdapter);
-		
-		
-
+	
 	}
 	 
 	public void mOnClick(View v) {
@@ -105,26 +133,55 @@ public class MainActivity extends Activity {
     
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
+		SharedPreferences pref = getSharedPreferences("PrefTest", 0);
+		SharedPreferences.Editor edit = pref.edit();
+		
     	switch (item.getItemId()) {
-    
+
+		// Alarm Menu
     	case R.id.item1:
 			//mBtn.setTextColor(Color.RED);
     		//setBackgroundColor(FF0000);
     		showDialog(Alarm);
     		return true;
-    		
+
+    	// Info Menu
     	case R.id.item3:
     		startActivity(new Intent(this, InfoActivity.class));
     		return true;
-    		
-    	case R.id.item4:
-			//mBtn.setTextColor(Color.RED);
-    		//setBackgroundColor(FF0000);
-    		
-    		return true;
-   
+    	
+    	// Changing color in menu2
     	case R.id.item5:
-			setTitleColor(Color.BLUE);
+    		// blue = 0
+    		edit.putInt("color", 0);
+    		edit.commit();
+    		
+    		// code for MainActivity re-drawing. 
+    		((MainActivity)(MainActivity.mContext)).onResume();
+    		return true;
+    	case R.id.item6:
+    		// red = 1
+    		edit.putInt("color", 1);
+    		edit.commit();
+    		((MainActivity)(MainActivity.mContext)).onResume();
+    		return true;
+    	case R.id.item7:
+    		// purple = 2
+    		edit.putInt("color", 2);
+    		edit.commit();
+    		((MainActivity)(MainActivity.mContext)).onResume();
+    		return true;
+    	case R.id.item8:
+    		// green = 3
+    		edit.putInt("color", 3);
+    		edit.commit();
+    		((MainActivity)(MainActivity.mContext)).onResume();
+    		return true;
+    	case R.id.item9:
+    		// pink = 4
+    		edit.putInt("color", 4);
+    		edit.commit();
+    		((MainActivity)(MainActivity.mContext)).onResume();
     		return true;
     	}
     	return false;
@@ -200,18 +257,23 @@ class MyItem {
 	}
 }
 
-// 어댑터 클래스
+// Adapter class
 class MyListAdapter extends BaseAdapter {
+	
 	Context maincon;
 	LayoutInflater Inflater;
 	ArrayList<MyItem> arSrc;
 	int layout;
+	// color
+	int currentColor;
 	
-	public MyListAdapter(Context context, int alayout, ArrayList<MyItem> aarSrc) {
+	public MyListAdapter(Context context, int alayout, ArrayList<MyItem> aarSrc, int aColor) {
 		maincon = context;
 		Inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		arSrc = aarSrc;
 		layout = alayout;
+		// color 
+		currentColor = aColor;
 	}
 	
 	public int getCount() {
@@ -242,20 +304,187 @@ class MyListAdapter extends BaseAdapter {
 		TextView textViewTemperature = (TextView)convertView.findViewById(R.id.temperature);
 		textViewTemperature.setText(arSrc.get(position).Temperature);
 		
-		// 배경바꾸기
-		switch(pos) {
+		// change background
+		switch(currentColor) {
 		case 0:
-			convertView.setBackgroundResource(R.drawable.switch1_1);
+			// blue = 0;
+			switch(pos) {
+			case 0:
+				convertView.setBackgroundResource(R.drawable.switch1_1);
+				break;
+			case 1:
+				convertView.setBackgroundResource(R.drawable.switch1_2);
+				break;
+			case 2:
+				convertView.setBackgroundResource(R.drawable.switch1_3);
+				break;
+			case 3:
+				convertView.setBackgroundResource(R.drawable.switch1_4);
+				break;
+			case 4:
+				convertView.setBackgroundResource(R.drawable.switch1_5);
+				break;	
+			case 5:
+				convertView.setBackgroundResource(R.drawable.switch1_6);
+				break;	
+			case 6:
+				convertView.setBackgroundResource(R.drawable.switch1_7);
+				break;	
+			case 7:
+				convertView.setBackgroundResource(R.drawable.switch1_8);
+				break;	
+			case 8:
+				convertView.setBackgroundResource(R.drawable.switch1_9);
+				break;	
+			case 9:
+				convertView.setBackgroundResource(R.drawable.switch1_10);
+				break;	
+			}
 			break;
 		case 1:
-			convertView.setBackgroundResource(R.drawable.switch1_2);
+			// red = 1;
+			switch(pos) {
+			case 0:
+				convertView.setBackgroundResource(R.drawable.switch2_1);
+				break;
+			case 1:
+				convertView.setBackgroundResource(R.drawable.switch2_2);
+				break;
+			case 2:
+				convertView.setBackgroundResource(R.drawable.switch2_3);
+				break;
+			case 3:
+				convertView.setBackgroundResource(R.drawable.switch2_4);
+				break;
+			case 4:
+				convertView.setBackgroundResource(R.drawable.switch2_5);
+				break;	
+			case 5:
+				convertView.setBackgroundResource(R.drawable.switch2_6);
+				break;	
+			case 6:
+				convertView.setBackgroundResource(R.drawable.switch2_7);
+				break;	
+			case 7:
+				convertView.setBackgroundResource(R.drawable.switch2_8);
+				break;	
+			case 8:
+				convertView.setBackgroundResource(R.drawable.switch2_9);
+				break;	
+			case 9:
+				convertView.setBackgroundResource(R.drawable.switch2_10);
+				break;	
+			}
 			break;
 		case 2:
-			convertView.setBackgroundResource(R.drawable.switch1_3);
+			// purple = 2;
+			switch(pos) {
+			case 0:
+				convertView.setBackgroundResource(R.drawable.switch3_1);
+				break;
+			case 1:
+				convertView.setBackgroundResource(R.drawable.switch3_2);
+				break;
+			case 2:
+				convertView.setBackgroundResource(R.drawable.switch3_3);
+				break;
+			case 3:
+				convertView.setBackgroundResource(R.drawable.switch3_4);
+				break;
+			case 4:
+				convertView.setBackgroundResource(R.drawable.switch3_5);
+				break;	
+			case 5:
+				convertView.setBackgroundResource(R.drawable.switch3_6);
+				break;	
+			case 6:
+				convertView.setBackgroundResource(R.drawable.switch3_7);
+				break;	
+			case 7:
+				convertView.setBackgroundResource(R.drawable.switch3_8);
+				break;	
+			case 8:
+				convertView.setBackgroundResource(R.drawable.switch3_9);
+				break;	
+			case 9:
+				convertView.setBackgroundResource(R.drawable.switch3_10);
+				break;	
+			}
 			break;
-			
+		
+		case 3:
+			// green = 3;
+			switch(pos) {
+			case 0:
+				convertView.setBackgroundResource(R.drawable.switch4_1);
+				break;
+			case 1:
+				convertView.setBackgroundResource(R.drawable.switch4_2);
+				break;
+			case 2:
+				convertView.setBackgroundResource(R.drawable.switch4_3);
+				break;
+			case 3:
+				convertView.setBackgroundResource(R.drawable.switch4_4);
+				break;
+			case 4:
+				convertView.setBackgroundResource(R.drawable.switch4_5);
+				break;	
+			case 5:
+				convertView.setBackgroundResource(R.drawable.switch4_6);
+				break;	
+			case 6:
+				convertView.setBackgroundResource(R.drawable.switch4_7);
+				break;	
+			case 7:
+				convertView.setBackgroundResource(R.drawable.switch4_8);
+				break;	
+			case 8:
+				convertView.setBackgroundResource(R.drawable.switch4_9);
+				break;	
+			case 9:
+				convertView.setBackgroundResource(R.drawable.switch4_10);
+				break;	
+			}
+			break;
+		case 4:
+			// pink = 4;
+			switch(pos) {
+			case 0:
+				convertView.setBackgroundResource(R.drawable.switch5_1);
+				break;
+			case 1:
+				convertView.setBackgroundResource(R.drawable.switch5_2);
+				break;
+			case 2:
+				convertView.setBackgroundResource(R.drawable.switch5_3);
+				break;
+			case 3:
+				convertView.setBackgroundResource(R.drawable.switch5_4);
+				break;
+			case 4:
+				convertView.setBackgroundResource(R.drawable.switch5_5);
+				break;	
+			case 5:
+				convertView.setBackgroundResource(R.drawable.switch5_6);
+				break;	
+			case 6:
+				convertView.setBackgroundResource(R.drawable.switch5_7);
+				break;	
+			case 7:
+				convertView.setBackgroundResource(R.drawable.switch5_8);
+				break;	
+			case 8:
+				convertView.setBackgroundResource(R.drawable.switch5_9);
+				break;	
+			case 9:
+				convertView.setBackgroundResource(R.drawable.switch5_10);
+				break;	
+			}
+			break;
 		}
 		
+			
 		return convertView;
 	}
 }
