@@ -69,8 +69,6 @@ public class MainActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		
-		Log.i("MainActivity", "onResume");
-		
 		SharedPreferences pref = getSharedPreferences("PrefTest", 0);
 		SharedPreferences.Editor edit = pref.edit();
 		String myStr = "서울시 강남구";
@@ -241,250 +239,252 @@ public class MainActivity extends Activity {
 	 //return sender;
 
 	}
-}
 
-class MyItem {
-	int Icon;
-	String Name;
-	String Temperature;
-	boolean Selected;
-	
-	MyItem(int aIcon, String aName, String aTemperature) {
-		Icon = aIcon;
-		Name = aName;
-		Temperature = aTemperature + "°C";
-		Selected = false;
-	}
-}
+	class MyItem {
+		int Icon;
+		String Name;
+		String Temperature;
+		boolean Selected;
 
-// Adapter class
-class MyListAdapter extends BaseAdapter {
-	
-	Context maincon;
-	LayoutInflater Inflater;
-	ArrayList<MyItem> arSrc;
-	int layout;
-	// color
-	int currentColor;
-	
-	public MyListAdapter(Context context, int alayout, ArrayList<MyItem> aarSrc, int aColor) {
-		maincon = context;
-		Inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		arSrc = aarSrc;
-		layout = alayout;
-		// color 
-		currentColor = aColor;
-	}
-	
-	public int getCount() {
-		return arSrc.size();
-	}
-	
-	public String getItem(int position) {
-		return arSrc.get(position).Name;
-	}
-	
-	public long getItemId(int position) {
-		return position;
-	}
-	
-	public View getView(int position, View convertView, ViewGroup parent) {
-		final int pos = position;
-		
-		if(convertView == null) {
-			convertView = Inflater.inflate(layout, parent, false);
+		MyItem(int aIcon, String aName, String aTemperature) {
+			Icon = aIcon;
+			Name = aName;
+			Temperature = aTemperature + "°C";
+			Selected = false;
 		}
-		ImageView img = (ImageView)convertView.findViewById(R.id.weather_icon);
-		img.setImageResource(arSrc.get(position).Icon);
-		
-		TextView textViewAddress = (TextView)convertView.findViewById(R.id.address);
-		// textViewAddress.setTypeface(Typeface.createFromAsset(getAssets(), "RixMGoB.ttf"));
-		textViewAddress.setText(arSrc.get(position).Name);
-		
-		TextView textViewTemperature = (TextView)convertView.findViewById(R.id.temperature);
-		textViewTemperature.setText(arSrc.get(position).Temperature);
-		
-		// change background
-		switch(currentColor) {
-		case 0:
-			// blue = 0;
-			switch(pos) {
-			case 0:
-				convertView.setBackgroundResource(R.drawable.switch1_1);
-				break;
-			case 1:
-				convertView.setBackgroundResource(R.drawable.switch1_2);
-				break;
-			case 2:
-				convertView.setBackgroundResource(R.drawable.switch1_3);
-				break;
-			case 3:
-				convertView.setBackgroundResource(R.drawable.switch1_4);
-				break;
-			case 4:
-				convertView.setBackgroundResource(R.drawable.switch1_5);
-				break;	
-			case 5:
-				convertView.setBackgroundResource(R.drawable.switch1_6);
-				break;	
-			case 6:
-				convertView.setBackgroundResource(R.drawable.switch1_7);
-				break;	
-			case 7:
-				convertView.setBackgroundResource(R.drawable.switch1_8);
-				break;	
-			case 8:
-				convertView.setBackgroundResource(R.drawable.switch1_9);
-				break;	
-			case 9:
-				convertView.setBackgroundResource(R.drawable.switch1_10);
-				break;	
-			}
-			break;
-		case 1:
-			// red = 1;
-			switch(pos) {
-			case 0:
-				convertView.setBackgroundResource(R.drawable.switch2_1);
-				break;
-			case 1:
-				convertView.setBackgroundResource(R.drawable.switch2_2);
-				break;
-			case 2:
-				convertView.setBackgroundResource(R.drawable.switch2_3);
-				break;
-			case 3:
-				convertView.setBackgroundResource(R.drawable.switch2_4);
-				break;
-			case 4:
-				convertView.setBackgroundResource(R.drawable.switch2_5);
-				break;	
-			case 5:
-				convertView.setBackgroundResource(R.drawable.switch2_6);
-				break;	
-			case 6:
-				convertView.setBackgroundResource(R.drawable.switch2_7);
-				break;	
-			case 7:
-				convertView.setBackgroundResource(R.drawable.switch2_8);
-				break;	
-			case 8:
-				convertView.setBackgroundResource(R.drawable.switch2_9);
-				break;	
-			case 9:
-				convertView.setBackgroundResource(R.drawable.switch2_10);
-				break;	
-			}
-			break;
-		case 2:
-			// purple = 2;
-			switch(pos) {
-			case 0:
-				convertView.setBackgroundResource(R.drawable.switch3_1);
-				break;
-			case 1:
-				convertView.setBackgroundResource(R.drawable.switch3_2);
-				break;
-			case 2:
-				convertView.setBackgroundResource(R.drawable.switch3_3);
-				break;
-			case 3:
-				convertView.setBackgroundResource(R.drawable.switch3_4);
-				break;
-			case 4:
-				convertView.setBackgroundResource(R.drawable.switch3_5);
-				break;	
-			case 5:
-				convertView.setBackgroundResource(R.drawable.switch3_6);
-				break;	
-			case 6:
-				convertView.setBackgroundResource(R.drawable.switch3_7);
-				break;	
-			case 7:
-				convertView.setBackgroundResource(R.drawable.switch3_8);
-				break;	
-			case 8:
-				convertView.setBackgroundResource(R.drawable.switch3_9);
-				break;	
-			case 9:
-				convertView.setBackgroundResource(R.drawable.switch3_10);
-				break;	
-			}
-			break;
-		
-		case 3:
-			// green = 3;
-			switch(pos) {
-			case 0:
-				convertView.setBackgroundResource(R.drawable.switch4_1);
-				break;
-			case 1:
-				convertView.setBackgroundResource(R.drawable.switch4_2);
-				break;
-			case 2:
-				convertView.setBackgroundResource(R.drawable.switch4_3);
-				break;
-			case 3:
-				convertView.setBackgroundResource(R.drawable.switch4_4);
-				break;
-			case 4:
-				convertView.setBackgroundResource(R.drawable.switch4_5);
-				break;	
-			case 5:
-				convertView.setBackgroundResource(R.drawable.switch4_6);
-				break;	
-			case 6:
-				convertView.setBackgroundResource(R.drawable.switch4_7);
-				break;	
-			case 7:
-				convertView.setBackgroundResource(R.drawable.switch4_8);
-				break;	
-			case 8:
-				convertView.setBackgroundResource(R.drawable.switch4_9);
-				break;	
-			case 9:
-				convertView.setBackgroundResource(R.drawable.switch4_10);
-				break;	
-			}
-			break;
-		case 4:
-			// pink = 4;
-			switch(pos) {
-			case 0:
-				convertView.setBackgroundResource(R.drawable.switch5_1);
-				break;
-			case 1:
-				convertView.setBackgroundResource(R.drawable.switch5_2);
-				break;
-			case 2:
-				convertView.setBackgroundResource(R.drawable.switch5_3);
-				break;
-			case 3:
-				convertView.setBackgroundResource(R.drawable.switch5_4);
-				break;
-			case 4:
-				convertView.setBackgroundResource(R.drawable.switch5_5);
-				break;	
-			case 5:
-				convertView.setBackgroundResource(R.drawable.switch5_6);
-				break;	
-			case 6:
-				convertView.setBackgroundResource(R.drawable.switch5_7);
-				break;	
-			case 7:
-				convertView.setBackgroundResource(R.drawable.switch5_8);
-				break;	
-			case 8:
-				convertView.setBackgroundResource(R.drawable.switch5_9);
-				break;	
-			case 9:
-				convertView.setBackgroundResource(R.drawable.switch5_10);
-				break;	
-			}
-			break;
+	}
+
+	// Adapter class
+	class MyListAdapter extends BaseAdapter {
+
+		Context maincon;
+		LayoutInflater Inflater;
+		ArrayList<MyItem> arSrc;
+		int layout;
+		// color
+		int currentColor;
+
+		public MyListAdapter(Context context, int alayout,
+				ArrayList<MyItem> aarSrc, int aColor) {
+			maincon = context;
+			Inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			arSrc = aarSrc;
+			layout = alayout;
+			// color
+			currentColor = aColor;
 		}
-		
-			
-		return convertView;
+
+		public int getCount() {
+			return arSrc.size();
+		}
+
+		public String getItem(int position) {
+			return arSrc.get(position).Name;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final int pos = position;
+
+			if (convertView == null) {
+				convertView = Inflater.inflate(layout, parent, false);
+			}
+			ImageView img = (ImageView) convertView.findViewById(R.id.weather_icon);
+			img.setImageResource(arSrc.get(position).Icon);
+
+			TextView textViewAddress = (TextView) convertView.findViewById(R.id.address);
+			// typeface. 
+			textViewAddress.setTypeface(Typeface.createFromAsset(getAssets(), "RixMGoB.ttf"));
+			textViewAddress.setText(arSrc.get(position).Name);
+
+			TextView textViewTemperature = (TextView) convertView.findViewById(R.id.temperature);
+			textViewTemperature.setText(arSrc.get(position).Temperature);
+
+			// change background
+			switch (currentColor) {
+			case 0:
+				// blue = 0;
+				switch (pos) {
+				case 0:
+					convertView.setBackgroundResource(R.drawable.switch1_1);
+					break;
+				case 1:
+					convertView.setBackgroundResource(R.drawable.switch1_2);
+					break;
+				case 2:
+					convertView.setBackgroundResource(R.drawable.switch1_3);
+					break;
+				case 3:
+					convertView.setBackgroundResource(R.drawable.switch1_4);
+					break;
+				case 4:
+					convertView.setBackgroundResource(R.drawable.switch1_5);
+					break;
+				case 5:
+					convertView.setBackgroundResource(R.drawable.switch1_6);
+					break;
+				case 6:
+					convertView.setBackgroundResource(R.drawable.switch1_7);
+					break;
+				case 7:
+					convertView.setBackgroundResource(R.drawable.switch1_8);
+					break;
+				case 8:
+					convertView.setBackgroundResource(R.drawable.switch1_9);
+					break;
+				case 9:
+					convertView.setBackgroundResource(R.drawable.switch1_10);
+					break;
+				}
+				break;
+			case 1:
+				// red = 1;
+				switch (pos) {
+				case 0:
+					convertView.setBackgroundResource(R.drawable.switch2_1);
+					break;
+				case 1:
+					convertView.setBackgroundResource(R.drawable.switch2_2);
+					break;
+				case 2:
+					convertView.setBackgroundResource(R.drawable.switch2_3);
+					break;
+				case 3:
+					convertView.setBackgroundResource(R.drawable.switch2_4);
+					break;
+				case 4:
+					convertView.setBackgroundResource(R.drawable.switch2_5);
+					break;
+				case 5:
+					convertView.setBackgroundResource(R.drawable.switch2_6);
+					break;
+				case 6:
+					convertView.setBackgroundResource(R.drawable.switch2_7);
+					break;
+				case 7:
+					convertView.setBackgroundResource(R.drawable.switch2_8);
+					break;
+				case 8:
+					convertView.setBackgroundResource(R.drawable.switch2_9);
+					break;
+				case 9:
+					convertView.setBackgroundResource(R.drawable.switch2_10);
+					break;
+				}
+				break;
+			case 2:
+				// purple = 2;
+				switch (pos) {
+				case 0:
+					convertView.setBackgroundResource(R.drawable.switch3_1);
+					break;
+				case 1:
+					convertView.setBackgroundResource(R.drawable.switch3_2);
+					break;
+				case 2:
+					convertView.setBackgroundResource(R.drawable.switch3_3);
+					break;
+				case 3:
+					convertView.setBackgroundResource(R.drawable.switch3_4);
+					break;
+				case 4:
+					convertView.setBackgroundResource(R.drawable.switch3_5);
+					break;
+				case 5:
+					convertView.setBackgroundResource(R.drawable.switch3_6);
+					break;
+				case 6:
+					convertView.setBackgroundResource(R.drawable.switch3_7);
+					break;
+				case 7:
+					convertView.setBackgroundResource(R.drawable.switch3_8);
+					break;
+				case 8:
+					convertView.setBackgroundResource(R.drawable.switch3_9);
+					break;
+				case 9:
+					convertView.setBackgroundResource(R.drawable.switch3_10);
+					break;
+				}
+				break;
+
+			case 3:
+				// green = 3;
+				switch (pos) {
+				case 0:
+					convertView.setBackgroundResource(R.drawable.switch4_1);
+					break;
+				case 1:
+					convertView.setBackgroundResource(R.drawable.switch4_2);
+					break;
+				case 2:
+					convertView.setBackgroundResource(R.drawable.switch4_3);
+					break;
+				case 3:
+					convertView.setBackgroundResource(R.drawable.switch4_4);
+					break;
+				case 4:
+					convertView.setBackgroundResource(R.drawable.switch4_5);
+					break;
+				case 5:
+					convertView.setBackgroundResource(R.drawable.switch4_6);
+					break;
+				case 6:
+					convertView.setBackgroundResource(R.drawable.switch4_7);
+					break;
+				case 7:
+					convertView.setBackgroundResource(R.drawable.switch4_8);
+					break;
+				case 8:
+					convertView.setBackgroundResource(R.drawable.switch4_9);
+					break;
+				case 9:
+					convertView.setBackgroundResource(R.drawable.switch4_10);
+					break;
+				}
+				break;
+			case 4:
+				// pink = 4;
+				switch (pos) {
+				case 0:
+					convertView.setBackgroundResource(R.drawable.switch5_1);
+					break;
+				case 1:
+					convertView.setBackgroundResource(R.drawable.switch5_2);
+					break;
+				case 2:
+					convertView.setBackgroundResource(R.drawable.switch5_3);
+					break;
+				case 3:
+					convertView.setBackgroundResource(R.drawable.switch5_4);
+					break;
+				case 4:
+					convertView.setBackgroundResource(R.drawable.switch5_5);
+					break;
+				case 5:
+					convertView.setBackgroundResource(R.drawable.switch5_6);
+					break;
+				case 6:
+					convertView.setBackgroundResource(R.drawable.switch5_7);
+					break;
+				case 7:
+					convertView.setBackgroundResource(R.drawable.switch5_8);
+					break;
+				case 8:
+					convertView.setBackgroundResource(R.drawable.switch5_9);
+					break;
+				case 9:
+					convertView.setBackgroundResource(R.drawable.switch5_10);
+					break;
+				}
+				break;
+			}
+
+			return convertView;
+		}
 	}
 }

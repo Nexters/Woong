@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     >
 
-    <SearchView
-        android:id="@+id/searchView1"
-        android:layout_width="wrap_content"
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView"
+        android:hint="주소 입력"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="18dp" >
-    </SearchView>
+        android:imeOptions="actionSearch"
+        android:completionThreshold="1"
+        android:singleLine="true"
+        />
+    
 
 </RelativeLayout>
