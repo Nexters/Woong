@@ -42,43 +42,43 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends Activity {
 	private static final int Alarm = 0;
 	Toast mToast;
-	
-	// pointer variable of MainActivity.  
+
+	// pointer variable of MainActivity.
 	public static Context mContext;
-	
+
 	public MyListAdapter MyAdapter;
 	public ListView MyList;
-	
-	 //��� �ㅼ� �대���
+
+	// ��� �ㅼ� �대���
 	public TimePicker mTime;
 	private int mHour;
 	private int mMinute;
-	 
+
 	ArrayList<MyItem> arItem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		mContext = this;
 		// save address using preference
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		SharedPreferences pref = getSharedPreferences("PrefTest", 0);
 		SharedPreferences.Editor edit = pref.edit();
 		String myStr = "서울시 강남구";
-		
+
 		edit.putString("address4", myStr);
 		edit.putInt("count", 0);
-		
+
 		edit.commit();
-		
-		// 
+
+		//
 		arItem = new ArrayList<MyItem>();
 		MyItem mi;
 		mi = new MyItem(R.drawable.cloud_285x123, "서울시 마포구", "30");
@@ -87,26 +87,27 @@ public class MainActivity extends Activity {
 		arItem.add(mi);
 		mi = new MyItem(R.drawable.snow_93x225, "서울시 관악구", "40");
 		arItem.add(mi);
-		mi = new MyItem(R.drawable.cloud_285x123, 
-				pref.getString("address4", ""), 
-				"25");
+		mi = new MyItem(R.drawable.cloud_285x123,
+				pref.getString("address4", ""), "25");
 		arItem.add(mi);
-		
+
 		int myColor = pref.getInt("color", 0);
-		// MyListAdapter MyAdapter = new MyListAdapter(this, R.layout.icontext, arItem, myColor);
+		// MyListAdapter MyAdapter = new MyListAdapter(this, R.layout.icontext,
+		// arItem, myColor);
 		MyAdapter = new MyListAdapter(this, R.layout.icontext, arItem, myColor);
-		
+
 		// ListView MyList;
-		MyList = (ListView)findViewById(R.id.list);
+		MyList = (ListView) findViewById(R.id.list);
 		MyList.setDividerHeight(0);
 		MyList.setAdapter(MyAdapter);
-	
+
 	}
-	 
+
+	// Plus Button.
 	public void mOnClick(View v) {
-		switch(v.getId()) {
+		switch (v.getId()) {
 		case R.id.button1:
-			 startActivity(new Intent(this,SearchActivity.class)); 
+			startActivity(new Intent(this, SearchActivity.class));
 		}
 	}
 
@@ -116,127 +117,120 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	/*public boolean onPrepareOptionsMenu(Menu menu) {
-		//int color = background.getTextColors().getDefaultColor();
-		if (iv == Color.RED) {
-			menu.findItem(R.id.item4).setChecked(true);
-		}
-	
-		if (color == Color.BLUE) {
-			menu.findItem(R.id.item5).setChecked(true);
-		}
-		return true;
-	}*/
-    
-	
+
+	/*
+	 * public boolean onPrepareOptionsMenu(Menu menu) { //int color =
+	 * background.getTextColors().getDefaultColor(); if (iv == Color.RED) {
+	 * menu.findItem(R.id.item4).setChecked(true); }
+	 * 
+	 * if (color == Color.BLUE) { menu.findItem(R.id.item5).setChecked(true); }
+	 * return true; }
+	 */
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		SharedPreferences pref = getSharedPreferences("PrefTest", 0);
 		SharedPreferences.Editor edit = pref.edit();
-		
-    	switch (item.getItemId()) {
+
+		switch (item.getItemId()) {
 
 		// Alarm Menu
-    	case R.id.item1:
-			//mBtn.setTextColor(Color.RED);
-    		//setBackgroundColor(FF0000);
-    		showDialog(Alarm);
-    		return true;
+		case R.id.item1:
+			// mBtn.setTextColor(Color.RED);
+			// setBackgroundColor(FF0000);
+			showDialog(Alarm);
+			return true;
 
-    	// Info Menu
-    	case R.id.item3:
-    		startActivity(new Intent(this, InfoActivity.class));
-    		return true;
-    	
-    	// Changing color in menu2
-    	case R.id.item5:
-    		// blue = 0
-    		edit.putInt("color", 0);
-    		edit.commit();
-    		
-    		// code for MainActivity re-drawing. 
-    		((MainActivity)(MainActivity.mContext)).onResume();
-    		return true;
-    	case R.id.item6:
-    		// red = 1
-    		edit.putInt("color", 1);
-    		edit.commit();
-    		((MainActivity)(MainActivity.mContext)).onResume();
-    		return true;
-    	case R.id.item7:
-    		// purple = 2
-    		edit.putInt("color", 2);
-    		edit.commit();
-    		((MainActivity)(MainActivity.mContext)).onResume();
-    		return true;
-    	case R.id.item8:
-    		// green = 3
-    		edit.putInt("color", 3);
-    		edit.commit();
-    		((MainActivity)(MainActivity.mContext)).onResume();
-    		return true;
-    	case R.id.item9:
-    		// pink = 4
-    		edit.putInt("color", 4);
-    		edit.commit();
-    		((MainActivity)(MainActivity.mContext)).onResume();
-    		return true;
-    	}
-    	return false;
-    }
-	
-	//TimePicker 由ъ���
-	 private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
-	    new TimePickerDialog.OnTimeSetListener(){
-	     @Override
-	     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-	      mHour = hourOfDay;
-	      mMinute = minute;
-	     
-	     }  
-	 };
-	 
+			// Info Menu
+		case R.id.item3:
+			startActivity(new Intent(this, InfoActivity.class));
+			return true;
+
+			// Changing color in menu2
+		case R.id.item5:
+			// blue = 0
+			edit.putInt("color", 0);
+			edit.commit();
+
+			// code for MainActivity re-drawing.
+			((MainActivity) (MainActivity.mContext)).onResume();
+			return true;
+		case R.id.item6:
+			// red = 1
+			edit.putInt("color", 1);
+			edit.commit();
+			((MainActivity) (MainActivity.mContext)).onResume();
+			return true;
+		case R.id.item7:
+			// purple = 2
+			edit.putInt("color", 2);
+			edit.commit();
+			((MainActivity) (MainActivity.mContext)).onResume();
+			return true;
+		case R.id.item8:
+			// green = 3
+			edit.putInt("color", 3);
+			edit.commit();
+			((MainActivity) (MainActivity.mContext)).onResume();
+			return true;
+		case R.id.item9:
+			// pink = 4
+			edit.putInt("color", 4);
+			edit.commit();
+			((MainActivity) (MainActivity.mContext)).onResume();
+			return true;
+		}
+		return false;
+	}
+
+	// TimePicker 由ъ���
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			mHour = hourOfDay;
+			mMinute = minute;
+
+		}
+	};
 
 	protected Dialog onCreateDialog(int id) {
 		AlertDialog alert;
-		
-		switch(id) {
+
+		switch (id) {
 		case Alarm:
 			setAlarm();
-			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute, false);
-			
-		} 
-		
-		//return alert;
-		  return null;
+			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
+					false);
+
+		}
+
+		// return alert;
+		return null;
 	}
-	
-	
-	//������ㅼ�
-	  private void setAlarm() {
-       Intent intent = new Intent(MainActivity.this, RepeatingAlarm.class);
-       PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this,
-               0, intent, 0);
-       
-       // We want the alarm to go off 30 seconds from now.
-       long firstTime = SystemClock.elapsedRealtime(); // 0�쇰� �명�
-       firstTime += (mHour * 1000 * 60 * 60) + (mMinute *1000 * 60); //�ㅼ����
 
-       // Schedule the alarm!
-       AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-       am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                       firstTime, 86400*1000, sender);
+	// ������ㅼ�
+	private void setAlarm() {
+		Intent intent = new Intent(MainActivity.this, RepeatingAlarm.class);
+		PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0,
+				intent, 0);
 
-       // Tell the user about what we did.
-       if (mToast != null) {
-           mToast.cancel();
-       }
-       mToast = Toast.makeText(MainActivity.this, R.string.repeating_scheduled,
-               Toast.LENGTH_LONG);
-       mToast.show();
-	
+		// We want the alarm to go off 30 seconds from now.
+		long firstTime = SystemClock.elapsedRealtime(); // 0�쇰� �명�
+		firstTime += (mHour * 1000 * 60 * 60) + (mMinute * 1000 * 60); // �ㅼ����
 
-	 //return sender;
+		// Schedule the alarm!
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+				86400 * 1000, sender);
+
+		// Tell the user about what we did.
+		if (mToast != null) {
+			mToast.cancel();
+		}
+		mToast = Toast.makeText(MainActivity.this,
+				R.string.repeating_scheduled, Toast.LENGTH_LONG);
+		mToast.show();
+
+		// return sender;
 
 	}
 
@@ -293,18 +287,45 @@ public class MainActivity extends Activity {
 			if (convertView == null) {
 				convertView = Inflater.inflate(layout, parent, false);
 			}
-			ImageView img = (ImageView) convertView.findViewById(R.id.weather_icon);
+			ImageView img = (ImageView) convertView
+					.findViewById(R.id.weather_icon);
 			img.setImageResource(arSrc.get(position).Icon);
 
-			TextView textViewAddress = (TextView) convertView.findViewById(R.id.address);
-			// typeface. 
-			textViewAddress.setTypeface(Typeface.createFromAsset(getAssets(), "RixMGoB.ttf"));
+			TextView textViewAddress = (TextView) convertView
+					.findViewById(R.id.address);
+			// typeface.
+			textViewAddress.setTypeface(Typeface.createFromAsset(getAssets(),
+					"RixMGoB.ttf"));
 			textViewAddress.setText(arSrc.get(position).Name);
 
-			TextView textViewTemperature = (TextView) convertView.findViewById(R.id.temperature);
+			TextView textViewTemperature = (TextView) convertView
+					.findViewById(R.id.temperature);
 			textViewTemperature.setText(arSrc.get(position).Temperature);
 
+			// Toggle?
+			convertView.setOnClickListener(new Button.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+
+					if (arSrc.get(pos).Selected == true) {
+						v.setBackgroundResource(R.drawable.unselected_720x128);
+						arSrc.get(pos).Selected = false;
+					} else {
+						// elsseeee
+						// 색칠하는 함수.
+						switchPaint(v, pos);
+						arSrc.get(pos).Selected = true;
+					}
+				}
+			});
+
 			// change background
+
+			return convertView;
+		}
+
+		public void switchPaint(View convertView, int pos) {
 			switch (currentColor) {
 			case 0:
 				// blue = 0;
@@ -484,7 +505,6 @@ public class MainActivity extends Activity {
 				break;
 			}
 
-			return convertView;
 		}
 	}
 }
