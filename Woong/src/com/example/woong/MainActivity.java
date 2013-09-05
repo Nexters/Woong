@@ -102,6 +102,13 @@ public class MainActivity extends Activity {
 		MyList.setAdapter(MyAdapter);
 
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		
+	}
 
 	// Plus Button.
 	public void mOnClick(View v) {
@@ -321,7 +328,16 @@ public class MainActivity extends Activity {
 			});
 
 			// change background
-
+			if (arSrc.get(pos).Selected == false) {
+				convertView.setBackgroundResource(R.drawable.unselected_720x128);
+				
+			} else {
+				// elsseeee
+				// 색칠하는 함수.
+				switchPaint(convertView, pos);
+				
+			}
+			
 			return convertView;
 		}
 
