@@ -5,7 +5,7 @@
     >
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
+        android:id="@+id/acTextView"
         android:hint="주소 입력"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
